@@ -1,0 +1,3 @@
+[submodule "covidclinicaldata"]
+	path = covidclinicaldata
+	url = https://github.com/Sir-Slade/covidclinicaldata
