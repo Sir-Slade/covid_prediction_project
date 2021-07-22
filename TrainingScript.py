@@ -17,7 +17,7 @@ pam = training_data["dia"] + ((training_data["sys"] - training_data["dia"])/3)
 training_data = pd.concat([training_data, pam], axis=1)
 training_data.rename({ 0 : "pam"}, axis=1,inplace =True) #To rename the column that was appended (which has a value of 0 that is not a string)
 
-selected_features = ["wheezes", "ctab", "labored_respiration", "pam", "rr", "pulse", "temperature", "high_risk_exposure_occupation", "cough", "sob", "loss_of_smell", "muscle_sore", "loss_of_taste", "headache", "days_since_symptom_onset", "fatigue", "fever","asthma", "smoker", "diabetes"]
+selected_features = ["wheezes", "ctab", "pam", "rr", "pulse", "temperature", "high_risk_exposure_occupation", "cough", "loss_of_smell", "muscle_sore", "loss_of_taste", "headache", "days_since_symptom_onset", "fatigue", "fever", "diabetes"]
 
 #Imputation
 imputer = DataImputer()
@@ -41,7 +41,7 @@ print("Saving model...", end="")
 local_path = os.path.realpath("serialized_models")
 model_path = os.path.join(local_path, 'LogisticRegression')
 os.mkdir(model_path)
-    
+
 pickle.dump(model, open(model_path + "/logistic_regression.mdl", mode='wb'))
 pickle.dump(imputer, open(model_path + "/imputer.imp", mode="wb"))
 
