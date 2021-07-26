@@ -12,12 +12,23 @@ imputer = pickle.load(open(model_path + "/imputer.imp", mode='rb'))
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    dataJson = request.get_json(force=True)
-    dataFormatted = pd.read_json(dataJson) #If we are going to predict many. I need to create another endpoint if we are just going to predict 1
-    imputer.transform(dataFormatted)
-    prediction = model.predict(dataFormatted) #Need also to implement the prediction threshold here 
-    print(prediction)
-    return jsonify(prediction.tolist())
+    try:
+        threshold = .44 #The threshold used to classify a result (if p[x=="Positive"] > .44, then x is "Positive")
+        
+        dataJson = request.get_json(force=True)
+        dataFormatted = pd.read_json(dataJson) #If we are going to predict many. I need to create another endpoint if we are just going to predict 1
+        imputer.transform(dataFormatted)
+        prediction = model.predict_proba(dataFormatted) #Need also to implement the prediction threshold here 
+
+        # pd.cut() is used to bin the probabilities
+        # if the probability (of class positive) is between 0-threshold then, the label assigned is "Negative"
+        # 'right=False' means to classify the threshold as a "Negative" result (ie if p[x] == threshold, then x is "Negative")
+        prediction = pd.cut(prediction[:,1], [0, threshold, 1], labels=["Negative", "Positive"], right=False) 
+        print(prediction)
+        return jsonify(prediction.tolist())
+    except Exception as e:
+        message = "An error ocurred while making a prediction: " + str(e)
+        return jsonify(message)
 
 if __name__ == "__main__":
     app.run(debug=True)
