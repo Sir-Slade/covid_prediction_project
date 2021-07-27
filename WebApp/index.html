@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>Covid Detector</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/slider.css">
+  
+</head>
+
+<body>
+ <div class="login">
+    <h1>Covid19 Detector</h1>
+    
+     <!-- Main Input For Receiving Query to our ML -->
+    <form action="{{ url_for('predict')}}"method="post">
+        
+        <div class="categorical-values">
+        <label class="switch">
+            <input type="checkbox" name="wheezes"/>
+            <span class="slider round"></span>
+        </label> Do you have wheezes?<br><br>
+        
+        <label class="switch">
+            <input type="checkbox" name="ctab"/>
+            <span class="slider round"></span>
+        </label> Is the lung exam (bilateral auscultation) normal?<br>
+        <label class="switch">
+            
+            <input type="checkbox" name="high_risk_exposure_occupation"/>
+            <span class="slider round"></span>
+        </label> Do you have a high risk ocupation?<br><br>
+                
+        <label class="switch">
+            <input type="checkbox" name="cough"/>
+            <span class="slider round"></span>
+        </label> Do you have a cough?<br><br>
+        
+        <label class="switch">
+            <input type="checkbox" name="loss_of_smell"/>
+            <span class="slider round"></span>
+        </label> Has your sense of smell changed and/or disappeared?<br>
+        
+        <label class="switch">
+            <input type="checkbox" name="loss_of_taste"/>
+            <span class="slider round"></span>
+        </label> Has your sense of taste changed and/or disappeared?<br>
+        
+        <label class="switch">
+            <input type="checkbox" name="muscle_sore"/>
+            <span class="slider round"></span>
+        </label> Does your body ache?<br><br>        
+        
+        <label class="switch">
+            <input type="checkbox" name="headache"/>
+            <span class="slider round"></span>
+        </label> Do you have a headache?<br><br>
+        
+        <label class="switch">
+            <input type="checkbox" name="fatigue"/>
+            <span class="slider round"></span>
+        </label> Do you feel exhausted?<br><br>
+        
+        <label class="switch">
+            <input type="checkbox" name="diabetes"/>
+            <span class="slider round"></span>
+        </label> Have you been diagnosed with diabetes?<br>        
+        </div>
+        
+        <!-- In order for them to look as they originally did, just take them out of the div -->
+        <div class="continuous-values">
+            <input type="number" name="pam" placeholder="Mean arterial pressure" required="required" />
+            <input type="number" name="rr" placeholder="Respiratory rate" required="required" />
+            <input type="number" name="pulse" placeholder="Pulse" required="required" />
+            <input type="number" name="temperature" placeholder="Temperature" required="required" />
+            <input type="number" name="days_since_symptom_onset" placeholder="Days since first symptom" required="required" />
+        </div>
+        <button type="submit">Check your result</button>
+    </form>
+
+   <br>
+   <br>
+   {{ prediction_text }}
+
+ </div>
+</body>
+</html>
