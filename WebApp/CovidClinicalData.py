@@ -11,7 +11,7 @@ def calculate_union(df_list):
     return union
 
 def read_data():    
-    os.chdir('covidclinicaldata/data/') # Change the working directory to the data directory
+    os.chdir('../covidclinicaldata/data/') # Change the working directory to the data directory
     all_data_available = glob.glob('*.csv')
 
     all_data = None #A workaround to declare the all_data variable for use later
