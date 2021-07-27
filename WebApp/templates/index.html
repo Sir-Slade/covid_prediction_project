@@ -7,8 +7,10 @@
     <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link rel="stylesheet" type="text/css" href="css/slider.css">
+    <!-- css can only be accessed via static files in flask. Note: If trying to just open the page in the browser it WONT WORK
+            this is part of the behavior of Flask -->
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename= "css/style.css")}}>
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename="css/slider.css")}}>
   
 </head>
 
@@ -17,56 +19,68 @@
     <h1>Covid19 Detector</h1>
     
      <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}"method="post">
+    <form action="{{ url_for('predictHTML')}}"method="post">
         
+        <!-- Since the value of the checkbox only gets submitted when checked, we use a 'hidden' input in addition to the
+            regular checkbox (with the same name) so, in case the checkbox is not activated, the hidden input is submitted.
+            If it is activated, the value of the checkbox will take precedence (because it is after) -->
         <div class="categorical-values">
         <label class="switch">
-            <input type="checkbox" name="wheezes"/>
+            <input type="hidden" name="wheezes" value="False"/>
+            <input type="checkbox" name="wheezes" value="True"/>
             <span class="slider round"></span>
         </label> Do you have wheezes?<br><br>
         
-        <label class="switch">
-            <input type="checkbox" name="ctab"/>
+        <label class="switch" >
+            <input type="hidden" name="ctab" value="False"/>
+            <input type="checkbox" name="ctab" value="True"/>
             <span class="slider round"></span>
         </label> Is the lung exam (bilateral auscultation) normal?<br>
         <label class="switch">
-            
-            <input type="checkbox" name="high_risk_exposure_occupation"/>
+            <input type="hidden" name="high_risk_exposure_occupation" value="False"/>
+            <input type="checkbox" name="high_risk_exposure_occupation" value="True"/>
             <span class="slider round"></span>
         </label> Do you have a high risk ocupation?<br><br>
                 
         <label class="switch">
-            <input type="checkbox" name="cough"/>
+            <input type="hidden" name="cough" value="False"/>
+            <input type="checkbox" name="cough" value="True"/>
             <span class="slider round"></span>
         </label> Do you have a cough?<br><br>
         
         <label class="switch">
-            <input type="checkbox" name="loss_of_smell"/>
+            <input type="hidden" name="loss_of_smell" value="False"/>
+            <input type="checkbox" name="loss_of_smell" value="True"/>
             <span class="slider round"></span>
         </label> Has your sense of smell changed and/or disappeared?<br>
         
         <label class="switch">
-            <input type="checkbox" name="loss_of_taste"/>
+            <input type="hidden" name="loss_of_taste" value="False"/>
+            <input type="checkbox" name="loss_of_taste" value="True"/>
             <span class="slider round"></span>
         </label> Has your sense of taste changed and/or disappeared?<br>
         
         <label class="switch">
-            <input type="checkbox" name="muscle_sore"/>
+            <input type="hidden" name="muscle_sore" value="False"/>
+            <input type="checkbox" name="muscle_sore" value="True"/>
             <span class="slider round"></span>
         </label> Does your body ache?<br><br>        
         
         <label class="switch">
-            <input type="checkbox" name="headache"/>
+            <input type="hidden" name="headache" value="False"/>
+            <input type="checkbox" name="headache" value="True"/>
             <span class="slider round"></span>
         </label> Do you have a headache?<br><br>
         
         <label class="switch">
-            <input type="checkbox" name="fatigue"/>
+            <input type="hidden" name="fatigue" value="False"/>
+            <input type="checkbox" name="fatigue" value="True"/>
             <span class="slider round"></span>
         </label> Do you feel exhausted?<br><br>
         
         <label class="switch">
-            <input type="checkbox" name="diabetes"/>
+            <input type="hidden" name="diabetes" value="False"/>
+            <input type="checkbox" name="diabetes" value="True"/>
             <span class="slider round"></span>
         </label> Have you been diagnosed with diabetes?<br>        
         </div>

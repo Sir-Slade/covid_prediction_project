@@ -10,6 +10,24 @@ model_path = os.path.realpath("serialized_models/LogisticRegression")
 model = pickle.load(open(model_path + "/logistic_regression.mdl", mode='rb'))
 imputer = pickle.load(open(model_path + "/imputer.imp", mode='rb'))
 
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+#Note: The value of route and the name of the function must be the same
+@app.route('/predictHTML',methods=['POST'])
+def predictHTML():
+    
+    for i in request.form.values():
+        print(i)
+    int_features = [x for x in request.form.values()]
+    ##final_features = [np.array(int_features)]
+    ##prediction = model.predict(final_features)
+    return render_template('index.html', prediction_text=str(int_features))
+    ##output = round(prediction[0], 2)
+
+    #return render_template('index.html', prediction_text='Sales should be $ {}'.format(output))
+
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
