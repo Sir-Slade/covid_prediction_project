@@ -28,8 +28,17 @@ def predictHTML():
     ### Test input (which results in positiv if we do not use the imputer and negative if we do)
     ### {'wheezes': 'True', 'ctab': 'False', 'high_risk_exposure_occupation': 'True', 'cough': 'False', 'loss_of_smell': 'True', 'loss_of_taste': 'False', 'muscle_sore': 'True', 'headache': 'False', 'fatigue': 'True', 'diabetes': 'False', 'pam': '1', 'rr': '2', ###'pulse': '3', 'temperature': '4', 'days_since_symptom_onset': '5'}
     
-    data = pd.DataFrame(dict(request.form), index=[0]) #Because we are just prediction one result, the index is 0
-    data[categorical_cols] = data[categorical_cols].apply(lambda x : x.map({"True": True, "False": False}), axis=1) #To convert string to bool
+    inputs = dict(request.form) #Convert the input to a dictionary that can be read by pandas ([x for x in request.form.values()] gives us the values as an array)
+    
+    #If there is an empty string, it comes from one of the empty input boxes in the main page (which only hold number values at this moment)
+    #so we convert any empty strings into NaNs
+    for key in inputs: 
+        value = inputs[key]
+        if value == "": 
+            inputs[key] = np.nan
+            
+    data = pd.DataFrame(inputs, index=[0]) #Because we are just prediction one result, the index is 0
+    data[categorical_cols] = data[categorical_cols].apply(lambda x : x.map({"True": True, "False": False}), axis=1).astype("bool") #To convert string to bool
     data[numerical_cols] = data[numerical_cols].astype("float")    
     data["fever"] = data["temperature"] >= 38    
     print(data.iloc[0]) #The values we get before imputing
