@@ -30,7 +30,7 @@ smote = SMOTE()
 X_oversample, y_oversample = smote.fit_resample(X, y)
 
 #Training
-model = LogisticRegression()
+model = LogisticRegression(C=2)
 model.fit(X_oversample, y_oversample)
 
 print("Complete!!!")
