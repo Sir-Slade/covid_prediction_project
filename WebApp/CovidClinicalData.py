@@ -92,13 +92,19 @@ def clean_data(all_data):
     sob_severe_indexes = all_data[all_data["sob_severity"] == 3].index
     all_data.drop(index=sob_severe_indexes, inplace=True)
     
+    all_data.drop_duplicates(subset=all_data.columns.difference(["covid19_test_results"]), inplace=True) #Drop all duplicates that exist between the classes
+    
 def create_file():
     data = read_data()
     clean_data(data)
     data.to_csv('covidclinicaldata-cleaned.csv', index=False)
     
 class DataImputer():
-    
+    '''
+    The data imputer designed for this project. It works with any subset of features of the data as well as with with the whole dataset, imputing accordingly.
+    It can be configured to calculate the value we want to impute for each feature manually (that is why it is used in favor of the Sklearn ColumnTransformer classes)
+    It also takes care of standardization of the vitals.
+    '''
     vitals = ["temperature", "pulse", "rr", "sats", "pam"]
     
     def __init__(self):
@@ -109,15 +115,15 @@ class DataImputer():
         self.fit(data_x, data_y)
         self.transform(data_x, training=True)
         
-    def fit(self, data_x, data_y):
+    def fit(self, data_x, data_y=None):
         self.get_high_risk_exposure_value(data_x, data_y)
         self.get_vitals_values(data_x)
         self.get_a_symptoms_values(data_x)
         self.get_r_symptoms_values(data_x)
         
     def transform(self, data_x, training=False):
-                
-        for feature in data_x.columns:           
+        imp_data = data_x.copy()        
+        for feature in imp_data.columns:           
             
             if feature in self.column_values:
                 new_value = self.column_values[feature]
@@ -125,16 +131,16 @@ class DataImputer():
                 if feature == "high_risk_exposure_occupation" and not training:
                     new_value=True             
                     
-                data_x.loc[data_x[feature].isna(), feature] = new_value
+                imp_data.loc[imp_data[feature].isna(), feature] = new_value
                 
                 #We standardize the vitals 
                 if feature in DataImputer.vitals:
-                    data_x[feature] = (data_x[feature] - self.vitals_values[feature][0]) / self.vitals_values[feature][1] 
+                    imp_data[feature] = (imp_data[feature] - self.vitals_values[feature][0]) / self.vitals_values[feature][1] 
                 
         if "high_risk_interactions" in data_x.columns: #Because this depends on 'high_risk_exposure_occupation being imputed first'
-            data_x.loc[data_x["high_risk_interactions"].isna(), "high_risk_interactions"] = data_x["high_risk_exposure_occupation"]
+            imp_data.loc[imp_data["high_risk_interactions"].isna(), "high_risk_interactions"] = imp_data["high_risk_exposure_occupation"]
         
-        
+        return imp_data
         
     def get_high_risk_exposure_value(self, data_x, data_y):
         if "high_risk_exposure_occupation" in data_x.columns:

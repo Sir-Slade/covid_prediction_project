@@ -43,7 +43,7 @@ def predictHTML():
     data["fever"] = data["temperature"] >= 38    
     print(data.iloc[0]) #The values we get before imputing
     
-    imputer.transform(data) #Note: If I use the imputer, the result becomes negative. However if I dont, the result is positive with the same values???
+    data = imputer.transform(data) #Note: If I use the imputer, the result becomes negative. However if I dont, the result is positive with the same values???
     data = data[ordered_features] #Because the order of the features matters in sklearn (does not remeber the names of the columns) and this statement will get the dataframe in the same order as 'ordered_features'    
     
     prediction = model.predict_proba(data)
