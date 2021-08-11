@@ -121,21 +121,27 @@ class DataImputer():
         self.get_a_symptoms_values(data_x)
         self.get_r_symptoms_values(data_x)
         
-    def transform(self, data_x, training=False):
+    def transform(self, data_x, data_y=None):
         imp_data = data_x.copy()        
         for feature in imp_data.columns:           
             
             if feature in self.column_values:
                 new_value = self.column_values[feature]
                 
-                if feature == "high_risk_exposure_occupation" and not training:
-                    new_value=True             
+                if feature == "high_risk_exposure_occupation" and data_y is None:
+                    new_value=True            
+                    
+                if feature == "days_since_symptom_onset" and data_y is not None: #If we are training, we impute depending on the class that we have since it looks like the means for the feature in each class are quite different
+                    data_x.loc[(data_x[feature].isna())  & (data_y == "Positive"), feature] = data_x.loc[(data_y == "Positive"), feature].mean()
+                    data_x.loc[(data_x[feature].isna())  & (data_y == "Negative"), feature] = data_x.loc[(data_y == "Negative"), feature].mean()
                     
                 imp_data.loc[imp_data[feature].isna(), feature] = new_value
                 
                 #We standardize the vitals 
                 if feature in DataImputer.vitals:
                     imp_data[feature] = (imp_data[feature] - self.vitals_values[feature][0]) / self.vitals_values[feature][1] 
+                    
+                
                 
         if "high_risk_interactions" in data_x.columns: #Because this depends on 'high_risk_exposure_occupation being imputed first'
             imp_data.loc[imp_data["high_risk_interactions"].isna(), "high_risk_interactions"] = imp_data["high_risk_exposure_occupation"]
