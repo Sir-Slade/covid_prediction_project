@@ -99,13 +99,16 @@ def create_file():
     clean_data(data)
     data.to_csv('covidclinicaldata-cleaned.csv', index=False)
     
+def calculate_pam(data_x):
+    return data_x["dia"] + ((data_x["sys"] - data_x["dia"])/3)
+    
 class DataImputer():
     '''
     The data imputer designed for this project. It works with any subset of features of the data as well as with with the whole dataset, imputing accordingly.
     It can be configured to calculate the value we want to impute for each feature manually (that is why it is used in favor of the Sklearn ColumnTransformer classes)
     It also takes care of standardization of the vitals.
     '''
-    vitals = ["temperature", "pulse", "rr", "sats", "pam"]
+    vitals = ["temperature", "pulse", "rr", "sats", "pam", "sys", "dia"]
     
     def __init__(self):
         self.column_values = {}
@@ -113,7 +116,7 @@ class DataImputer():
         
     def fit_transform(self, data_x, data_y):
         self.fit(data_x, data_y)
-        self.transform(data_x, training=True)
+        return self.transform(data_x, data_y)
         
     def fit(self, data_x, data_y=None):
         self.get_high_risk_exposure_value(data_x, data_y)
@@ -122,7 +125,11 @@ class DataImputer():
         self.get_r_symptoms_values(data_x)
         
     def transform(self, data_x, data_y=None):
-        imp_data = data_x.copy()        
+        imp_data = data_x.copy()      
+        
+        if "sys" in data_x.columns and "dia" in data_x.columns:
+            imp_data["pam"] = calculate_pam(data_x)
+            imp_data.drop(columns=["sys", "dia"], inplace=True)
         for feature in imp_data.columns:           
             
             if feature in self.column_values:
@@ -132,8 +139,8 @@ class DataImputer():
                     new_value=True            
                     
                 if feature == "days_since_symptom_onset" and data_y is not None: #If we are training, we impute depending on the class that we have since it looks like the means for the feature in each class are quite different
-                    data_x.loc[(data_x[feature].isna())  & (data_y == "Positive"), feature] = data_x.loc[(data_y == "Positive"), feature].mean()
-                    data_x.loc[(data_x[feature].isna())  & (data_y == "Negative"), feature] = data_x.loc[(data_y == "Negative"), feature].mean()
+                    imp_data.loc[(data_x[feature].isna())  & (data_y == "Positive"), feature] = data_x.loc[(data_y == "Positive"), feature].mean()
+                    imp_data.loc[(data_x[feature].isna())  & (data_y == "Negative"), feature] = data_x.loc[(data_y == "Negative"), feature].mean()
                     
                 imp_data.loc[imp_data[feature].isna(), feature] = new_value
                 
@@ -170,7 +177,12 @@ class DataImputer():
             self.column_values["sats"] = data_x["sats"].median()
             self.vitals_values["sats"] = (data_x["sats"].mean(), data_x["sats"].std())
             
-        if "pam" in data_x.columns:
+        if "sys" in data_x.columns and "dia" in data_x.columns:
+            pam = calculate_pam(data_x)
+            self.column_values["pam"] =  pam.mean()
+            self.vitals_values["pam"] = (pam.mean(), pam.std())            
+            
+        if "pam" in data_x.columns: #if for some reason we already have the pam we do the same as the previous step
             self.column_values["pam"] =  data_x["pam"].mean()
             self.vitals_values["pam"] = (data_x["pam"].mean(), data_x["pam"].std())
             
