@@ -148,10 +148,15 @@ class DataImputer():
                 if feature in DataImputer.vitals:
                     imp_data[feature] = (imp_data[feature] - self.vitals_values[feature][0]) / self.vitals_values[feature][1] 
                     
-                
+                #Convert all categorical values to boolean to avoid errors with some models
+                if imp_data[feature].dtype == "object": 
+                    imp_data[feature] = imp_data[feature].astype("bool")
+                    
                 
         if "high_risk_interactions" in data_x.columns: #Because this depends on 'high_risk_exposure_occupation being imputed first'
-            imp_data.loc[imp_data["high_risk_interactions"].isna(), "high_risk_interactions"] = imp_data["high_risk_exposure_occupation"]
+            imp_data.loc[imp_data["high_risk_interactions"].isna(), "high_risk_interactions"] = imp_data["high_risk_exposure_occupation"]   
+            imp_data["high_risk_interactions"] = imp_data["high_risk_interactions"].astype("bool")
+        
         
         return imp_data
         
