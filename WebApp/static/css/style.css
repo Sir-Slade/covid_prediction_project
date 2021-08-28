@@ -14,12 +14,15 @@ body {
 
 }
 .login { 
-	position: absolute;
 	top: 15%;
 	left: 47%;
-	margin: -150px 0 0 -150px;
-	width:500px;
-	height:400px;
+	margin: auto;
+	width:1000px;
+	height:400px;    
+}
+.container{/*flex is for allowing the elements in the container to be displayed horizontally*/
+	display:flex;
+    padding:30px;
 }
 .categorical-values{
     text-align:left;
@@ -27,7 +30,8 @@ body {
 }
 .continuous-values{
     position: relative; 
-    left:26%; width: 40%; 
+    left:-1%; width: 20%;
+    margin:auto; 
     padding: 10px;
 }
 

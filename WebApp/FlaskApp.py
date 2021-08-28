@@ -11,12 +11,16 @@ model = pickle.load(open(model_path + "/logistic_regression.mdl", mode='rb'))
 imputer = pickle.load(open(model_path + "/imputer.imp", mode='rb'))
 
 threshold = .44 #The threshold used to classify a result (if p[x=="Positive"] > .44, then x is "Positive")
-categorical_cols = ['wheezes', 'ctab', 'high_risk_exposure_occupation', 'cough',
+categorical_cols = ['wheezes', 'ctab', 'high_risk_exposure_occupation', 
    'loss_of_smell', 'loss_of_taste', 'muscle_sore', 'headache', 'fatigue',
-   'diabetes']
-numerical_cols = ['pam', 'rr', 'pulse', 'temperature',
-   'days_since_symptom_onset']
-ordered_features = ["wheezes", "ctab", "pam", "rr", "pulse", "temperature", "high_risk_exposure_occupation", "cough", "loss_of_smell", "muscle_sore", "loss_of_taste", "headache", "days_since_symptom_onset", "fatigue", "fever", "diabetes"]
+   'diarrhea', 'runny_nose', 'rhonchi', 'sore_throat', 'diabetes']
+numerical_cols = ['sys', 'dia', 'rr', 'pulse', 'temperature',
+   'days_since_symptom_onset', "cough_severity", "sob_severity"]
+ordered_features = ['cough', 'cough_severity', 'ctab', 'days_since_symptom_onset', 'dia',
+       'diabetes', 'diarrhea', 'fatigue', 'fever', 'headache',
+       'high_risk_exposure_occupation', 'loss_of_smell', 'loss_of_taste',
+       'muscle_sore', 'pulse', 'rhonchi', 'rr', 'runny_nose', 'sob',
+       'sob_severity', 'sore_throat', 'sys', 'temperature', 'wheezes']
 
 @app.route('/')
 def home():
@@ -40,11 +44,13 @@ def predictHTML():
     data = pd.DataFrame(inputs, index=[0]) #Because we are just prediction one result, the index is 0
     data[categorical_cols] = data[categorical_cols].apply(lambda x : x.map({"True": True, "False": False}), axis=1).astype("bool") #To convert string to bool
     data[numerical_cols] = data[numerical_cols].astype("float")    
-    data["fever"] = data["temperature"] >= 38    
+    data["fever"] = data["temperature"] >= 38  
+    data["cough"] = data["cough_severity"] != 0
+    data["sob"] = data["sob_severity"] != 0
     print(data.iloc[0]) #The values we get before imputing
     
-    data = imputer.transform(data) #Note: If I use the imputer, the result becomes negative. However if I dont, the result is positive with the same values???
-    data = data[ordered_features] #Because the order of the features matters in sklearn (does not remeber the names of the columns) and this statement will get the dataframe in the same order as 'ordered_features'    
+    data = data[ordered_features] #Because the order of the features matters in sklearn (does not remeber the names of the columns) and this statement will get the dataframe in the same order as 'ordered_features' 
+    data = imputer.transform(data) #Note: If I use the imputer, the result becomes negative. However if I dont, the result is positive with the same values???       
     
     prediction = model.predict_proba(data)
     

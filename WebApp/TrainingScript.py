@@ -13,16 +13,17 @@ print("DATA LOADING COMPLETE!!!")
 
 #Feature engineering
 print("Training model....",  end=" ")
-pam = training_data["dia"] + ((training_data["sys"] - training_data["dia"])/3)
-training_data = pd.concat([training_data, pam], axis=1)
-training_data.rename({ 0 : "pam"}, axis=1,inplace =True) #To rename the column that was appended (which has a value of 0 that is not a string)
 
-selected_features = ["wheezes", "ctab", "pam", "rr", "pulse", "temperature", "high_risk_exposure_occupation", "cough", "loss_of_smell", "muscle_sore", "loss_of_taste", "headache", "days_since_symptom_onset", "fatigue", "fever", "diabetes"]
+selected_features = ['cough', 'cough_severity', 'days_since_symptom_onset', 'dia',
+       'diabetes', 'diarrhea', 'fatigue', 'fever', 'headache',
+       'high_risk_exposure_occupation', 'loss_of_smell', 'loss_of_taste',
+       'muscle_sore', 'pulse', 'rr', 'runny_nose', 'sob', 'sob_severity',
+       'sore_throat', 'sys', 'temperature', 'wheezes']
 
 #Imputation
 imputer = DataImputer()
 X = training_data[selected_features]
-y = training_data.iloc[:,0]
+y = training_data.loc[:,"covid19_test_results"]
 imputer.fit_transform(X, y)
 
 #Resampling
