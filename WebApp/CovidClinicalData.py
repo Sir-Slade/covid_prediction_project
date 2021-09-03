@@ -11,6 +11,7 @@ def calculate_union(df_list):
     return union
 
 def read_data():    
+    og_dir = os.getcwd()
     os.chdir('../covidclinicaldata/data/') # Change the working directory to the data directory
     all_data_available = glob.glob('*.csv')
 
@@ -33,7 +34,7 @@ def read_data():
 
         print("All data size:", len(all_data))
         
-    os.chdir('../..') # Change the working directory to the data directory
+    os.chdir(og_dir) # Change the working directory to the data directory
     return all_data
     
 def clean_data(all_data):        

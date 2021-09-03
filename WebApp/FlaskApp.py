@@ -6,11 +6,11 @@ import pickle
 import os
 
 app = Flask(__name__)
-model_path = os.path.realpath("serialized_models/LogisticRegression")
-model = pickle.load(open(model_path + "/logistic_regression.mdl", mode='rb'))
+model_path = os.path.realpath("serialized_models/LogisticRegressionNewton")
+model = pickle.load(open(model_path + "/model.mdl", mode='rb'))
 imputer = pickle.load(open(model_path + "/imputer.imp", mode='rb'))
 
-threshold = .44 #The threshold used to classify a result (if p[x=="Positive"] > .44, then x is "Positive")
+threshold = .72 #The threshold used to classify a result (if p[x=="Positive"] > .72, then x is "Positive")
 categorical_cols = ['wheezes', 'ctab', 'high_risk_exposure_occupation', 
    'loss_of_smell', 'loss_of_taste', 'muscle_sore', 'headache', 'fatigue',
    'diarrhea', 'runny_nose', 'rhonchi', 'sore_throat', 'diabetes']
@@ -47,7 +47,6 @@ def predictHTML():
     data["fever"] = data["temperature"] >= 38  
     data["cough"] = data["cough_severity"] != 0
     data["sob"] = data["sob_severity"] != 0
-    print(data.iloc[0]) #The values we get before imputing
     
     data = data[ordered_features] #Because the order of the features matters in sklearn (does not remeber the names of the columns) and this statement will get the dataframe in the same order as 'ordered_features' 
     data = imputer.transform(data) #Note: If I use the imputer, the result becomes negative. However if I dont, the result is positive with the same values???       
@@ -65,7 +64,7 @@ def predictHTML():
 def predict():
     try:
         dataJson = request.get_json(force=True)
-        dataFormatted = pd.read_json(dataJson)
+        dataFormatted = pd.read_json(dataJson, orient="records")
         imputer.transform(dataFormatted)
         prediction = model.predict_proba(dataFormatted) #Need also to implement the prediction threshold here 
 
