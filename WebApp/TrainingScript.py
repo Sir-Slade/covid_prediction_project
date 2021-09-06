@@ -4,9 +4,16 @@ from sklearn.linear_model import LogisticRegression
 import pandas as pd
 import pickle
 import os
+import sys
 
 ##We read and clean all the data inside covidclinicaldata
-training_data = read_data()
+
+#If we specify a location of the covidclinicaldata github repo we use that location. Otherwise we use the default location in this repo.
+if len(sys.argv) > 1:
+    training_data = read_data(sys.argv[1])
+else:
+    training_data = read_data('../covidclinicaldata')
+
 clean_data(training_data)
 
 print("DATA LOADING COMPLETE!!!")

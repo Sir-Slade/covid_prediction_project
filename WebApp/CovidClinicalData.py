@@ -10,15 +10,20 @@ def calculate_union(df_list):
         union = np.union1d(union, df.index)        
     return union
 
-def read_data():    
+def read_data(path):    
+    '''
+    Reads the data from the covidclinicaldata project
+    
+    Parameters: path: The location of the covidclinicaldata repo
+    '''
     og_dir = os.getcwd()
-    os.chdir('../covidclinicaldata/data/') # Change the working directory to the data directory
+    os.chdir(path+"/data/") # Change the working directory to the data directory
     all_data_available = glob.glob('*.csv')
 
     all_data = None #A workaround to declare the all_data variable for use later
 
-    for file in all_data_available:     
-        df = pd.read_csv("../data/" + file)    
+    for file in all_data_available:
+        df = pd.read_csv(file)    
         print(file, df["covid19_test_results"].value_counts()["Positive"] / len(df["covid19_test_results"]), "Size:", len(df))
         try:
             df["rapid_flu_results"] = df["rapid_flu_results"].astype("object") #Because in 2 files all values are null and because of that pandas changes the column type to float
@@ -38,6 +43,9 @@ def read_data():
     return all_data
     
 def clean_data(all_data):        
+    '''
+    Cleans inplace the dataframe that contains all data of most errors
+    '''
     #We eliminate outliers using the thresholds in the following lines. This thresholds were obtained by visually examining the data (DataExploration notebook) since some
     # of the distributions are really narrow and the Quartile method for removing outliers would remove a lot of of the instances.
     low_temp = all_data[all_data["temperature"]<34.5]
