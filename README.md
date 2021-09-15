@@ -4,10 +4,10 @@ easily measured at home such as blood pressure and temprerature. In order to und
 the notebooks.
 
 ## Project references
-- [Coronavirus Disease 2019 (COVID-19) Clinical Data Repository](https://github.com/mdcollab/covidclinicaldata).
-- [Project summary and report](https://github.com/Sir-Slade/covid_prediction_project/blob/master/Covid_Predictor_Report.odp)
-- [Data Exploration Notebook](https://github.com/Sir-Slade/covid_prediction_project/blob/master/DataExploration.ipynb)
-- [Machine learning experiments](https://github.com/Sir-Slade/covid_prediction_project/blob/master/PredictorExperiments.ipynb)
+- [Coronavirus Disease 2019 (COVID-19) Clinical Data Repository](https://github.com/mdcollab/covidclinicaldata): The original repo that contains the data I used to build my model.
+- [Project summary and report](https://github.com/Sir-Slade/covid_prediction_project/blob/master/Covid_Predictor_Report.odp): A presentation that contains a summary of the process of how the model was developed, as well as final performance metrics for the model.
+- [Data Exploration Notebook](https://github.com/Sir-Slade/covid_prediction_project/blob/master/DataExploration.ipynb): Notebook I used for exploring the data and the cleaning process for the experiments.
+- [Machine learning experiments](https://github.com/Sir-Slade/covid_prediction_project/blob/master/PredictorExperiments.ipynb): Notebook I used for the experiments with different models (as described in the project summary presentation).
 
 ## Quick Deploy
 
