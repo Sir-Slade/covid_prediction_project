@@ -2,6 +2,7 @@ click @ file:///D:/bld/click_1621503984716/work
 colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1602866480661/work
 dataclasses @ file:///home/conda/feedstock_root/build_artifacts/dataclasses_1628958434797/work
 Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1633384704162/work
+gunicorn==20.1.0
 imbalanced-learn==0.8.1
 imblearn==0.0
 itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1621360792037/work
