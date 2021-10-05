@@ -17,6 +17,7 @@ easily measured at home such as blood pressure and temprerature. The result of t
   - `pandas`
   - `imblearn`
   - `scikit-learn`
+  - `flask`
 4.  Open a terminal and run the following command to train the model:
   - `python TrainingScript.py <covidclinicaldata location>` (if you dont specify a location, the script will asume 'covidclinicaldata' is in the parent folder.
 5.  Execute the following command to run the app locally:
