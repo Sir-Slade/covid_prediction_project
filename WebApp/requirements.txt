@@ -1,0 +1,19 @@
+click @ file:///D:/bld/click_1621503984716/work
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1602866480661/work
+dataclasses @ file:///home/conda/feedstock_root/build_artifacts/dataclasses_1628958434797/work
+Flask @ file:///home/conda/feedstock_root/build_artifacts/flask_1633384704162/work
+imbalanced-learn==0.8.1
+imblearn==0.0
+itsdangerous @ file:///home/conda/feedstock_root/build_artifacts/itsdangerous_1621360792037/work
+Jinja2 @ file:///home/conda/feedstock_root/build_artifacts/jinja2_1621419064915/work
+joblib @ file:///home/conda/feedstock_root/build_artifacts/joblib_1612898609989/work
+MarkupSafe @ file:///D:/bld/markupsafe_1621455847127/work
+numpy @ file:///D:/bld/numpy_1629092230867/work
+pandas @ file:///D:/bld/pandas_1631466259165/work
+python-dateutil @ file:///home/conda/feedstock_root/build_artifacts/python-dateutil_1626286286081/work
+pytz @ file:///home/conda/feedstock_root/build_artifacts/pytz_1633452062248/work
+scikit-learn @ file:///D:/bld/scikit-learn_1632611601235/work
+scipy @ file:///C:/bld/scipy_1628206591178/work
+six @ file:///home/conda/feedstock_root/build_artifacts/six_1620240208055/work
+threadpoolctl @ file:///home/conda/feedstock_root/build_artifacts/threadpoolctl_1633102299089/work
+Werkzeug @ file:///home/conda/feedstock_root/build_artifacts/werkzeug_1621518206714/work
