@@ -2,6 +2,8 @@
 The aim of this project is to create a fast, non-invasive and reliable test for determining whether a user is infected with Covid19 or not, using symptoms that can be
 easily measured at home such as blood pressure and temprerature. The result of the experiments done with this project show that a Logistic Regression model with a Newton solver, trained with 1-to-1 oversampled data and using a classification threshold of 0.72 is the model with the highest F2 score at 0.266904, showing that the model is very good at recognizing Negative examples, and at least better at recognizing Positive examples than random guessing, which makes it a viable alternative for identifying a patient that is potentially infected with Covid19. For more detailed information, please check the project summary and report presentation.
 
+The deployed app can be found at https://covid-predictor-project.herokuapp.com/
+
 ## Project references
 - [Coronavirus Disease 2019 (COVID-19) Clinical Data Repository](https://github.com/mdcollab/covidclinicaldata): The original repo that contains the data I used to build my model.
 - [Project summary and report](https://github.com/Sir-Slade/covid_prediction_project/blob/master/Covid_Predictor_Report.odp): A presentation that contains a summary of the process of how the model was developed, as well as final performance metrics for the model.
