@@ -9,7 +9,7 @@ The deployed app can be found at https://covid-predictor-project.herokuapp.com/
 - [Project summary and report](https://github.com/Sir-Slade/covid_prediction_project/blob/master/Covid_Predictor_Report.odp): A presentation that contains a summary of the process of how the model was developed, as well as final performance metrics for the model.
 - [Data Exploration Notebook](https://github.com/Sir-Slade/covid_prediction_project/blob/master/DataExploration.ipynb): Notebook I used for exploring the data and the cleaning process for the experiments.
 - [Model selection and Feature engineering Notebook](https://github.com/Sir-Slade/covid_prediction_project/blob/master/PredictorExperiments.ipynb): Notebook I used for the experiments with different models (as described in the project summary presentation).
-- [WebAPP](https://github.com/Sir-Slade/covid_prediction_project/WebApp): The directory containing the Covid Detector flask app that is deployed, including the TrainingScript.py used to train the model.
+- [WebAPP](https://github.com/Sir-Slade/covid_prediction_project/tree/master/WebApp): The directory containing the Covid Detector flask app that is deployed, including the TrainingScript.py used to train the model.
 
 ## Quick Deploy
 
