@@ -25,8 +25,8 @@ def read_remote_data():
     '''
     
     endpoint = "https://api.github.com/graphql"
-    username = "jperzabal"
-    token = "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"    
+    username = "Sir-Slade"
+    token = "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"    
     graphQL = GraphQLRetriever(endpoint, username, token)
     
     response_json = graphQL.post_query(get_names_query)
