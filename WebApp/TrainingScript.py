@@ -1,4 +1,4 @@
-from CovidClinicalData import read_local_data, read_remote_data, create_pandas_dataset, clean_data, DataImputer
+from CovidClinicalData import read_remote_data, create_pandas_dataset, clean_data, DataImputer
 from imblearn.over_sampling import SMOTE
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
@@ -8,18 +8,8 @@ import sys
 
 ##We read and clean all the data inside covidclinicaldata
 
-#If we specify a location of the covidclinicaldata github repo we use that location. Otherwise we use the default location in this repo.
-if len(sys.argv) > 1:
-    #if we specified a remote training, it will retrieve the data from the original mdcollab repo (recommended
-    # in case there is an update to the repo)
-    #Otherwise we assume the argument is a local training path
-    if(sys.argv[1] == "remote"):
-        data_files_list = read_remote_data()
-    else:
-        data_files_list = read_local_data(sys.argv[1])
-else:
-    data_files_list = read_local_data('../covidclinicaldata')
 
+data_files_list = read_remote_data()
 training_data = create_pandas_dataset(data_files_list)
 clean_data(training_data)
 
