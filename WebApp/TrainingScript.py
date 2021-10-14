@@ -50,6 +50,7 @@ local_path = os.path.realpath("serialized_models")
 model_path = os.path.join(local_path, 'LogisticRegressionNewton')
 
 print(local_path)
+os.mkdir(local_path)
 os.mkdir(model_path)
 
 pickle.dump(model, open(model_path + "/model.mdl", mode='wb'))
