@@ -30,6 +30,7 @@ def read_remote_data():
     graphQL = GraphQLRetriever(endpoint, username, token)
     
     response_json = graphQL.post_query(get_names_query)
+    print(response_json)
     entry_list = response_json["data"]["repository"]["object"]["entries"]
     all_data_paths = []
     for entry in entry_list:
