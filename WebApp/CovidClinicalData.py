@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+import GraphQLRetriever
 import glob
 import os
 
@@ -10,7 +10,7 @@ def calculate_union(df_list):
         union = np.union1d(union, df.index)        
     return union
 
-def read_data(path):    
+def read_local_data(path):    
     '''
     Reads the data from the covidclinicaldata project
     
@@ -19,7 +19,39 @@ def read_data(path):
     og_dir = os.getcwd()
     os.chdir(path+"/data/") # Change the working directory to the data directory
     all_data_available = glob.glob('*.csv')
+    os.chdir(og_dir) # Change the working directory to the data directory
+    
+def read_remote_data():
+    get_names_query = '''
+    repository(name: \\\"covidclinicaldata\\\", owner: \\\"Sir-Slade\\\"){
+        object(oid: \\\"984490766e9d6c56832c1577575d9a3b1039ab7c\\\"){
+            ... on Tree{
+                entries{  
+                    extension
+                    name
+                }
+            } 
+        }
+    }
+    '''
+    
+    endpoint = "https://api.github.com/graphql"
+    username = "jperzabal"
+    token = "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"
+    
+    GraphQLRetriever(endpoint, username, token)
+    
+    response_json = self.graphQL.post_query(self.get_names_query)
+    entry_list = response_json["data"]["repository"]["object"]["entries"]
+    all_data_paths = []
+    for entry in entry_list:
+        if entry["extension"] == ".csv":
+            # https://raw.githubusercontent.com is an endpoint that gives us the content of the file in raw form, contrary to the github.com endpoint (much like graphql api)
+            all_data_paths.append("https://raw.githubusercontent.com/Sir-Slade/covidclinicaldata/master/data/{0}".format(entry["name"]))
+    return all_data_paths
 
+    
+def create_pandas_dataset(all_data_available):
     all_data = None #A workaround to declare the all_data variable for use later
 
     for file in all_data_available:
@@ -39,7 +71,7 @@ def read_data(path):
 
         print("All data size:", len(all_data))
         
-    os.chdir(og_dir) # Change the working directory to the data directory
+    
     return all_data
     
 def clean_data(all_data):        
