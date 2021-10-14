@@ -1,4 +1,4 @@
-from CovidClinicalData import read_local_data, read_remote_data, clean_data, DataImputer
+from CovidClinicalData import read_local_data, read_remote_data, create_pandas_dataset, clean_data, DataImputer
 from imblearn.over_sampling import SMOTE
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
@@ -14,12 +14,13 @@ if len(sys.argv) > 1:
     # in case there is an update to the repo)
     #Otherwise we assume the argument is a local training path
     if(sys.argv[1] == "remote"):
-        training_data = read_remote_data()
+        data_files_list = read_remote_data()
     else:
-        training_data = read_local_data(sys.argv[1])
+        data_files_list = read_local_data(sys.argv[1])
 else:
-    training_data = read_local_data('../covidclinicaldata')
+    data_files_list = read_local_data('../covidclinicaldata')
 
+training_data = create_pandas_dataset(data_files_list)
 clean_data(training_data)
 
 print("DATA LOADING COMPLETE!!!")

@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-import GraphQLRetriever
+from GraphQLRetriever import GraphQLRetriever
 import glob
 import os
 
@@ -20,6 +20,7 @@ def read_local_data(path):
     os.chdir(path+"/data/") # Change the working directory to the data directory
     all_data_available = glob.glob('*.csv')
     os.chdir(og_dir) # Change the working directory to the data directory
+    return all_data_available
     
 def read_remote_data():
     get_names_query = '''
@@ -55,7 +56,7 @@ def create_pandas_dataset(all_data_available):
     all_data = None #A workaround to declare the all_data variable for use later
 
     for file in all_data_available:
-        df = pd.read_csv(file)    
+        df = pd.read_csv("/data/"+ file)    
         print(file, df["covid19_test_results"].value_counts()["Positive"] / len(df["covid19_test_results"]), "Size:", len(df))
         try:
             df["rapid_flu_results"] = df["rapid_flu_results"].astype("object") #Because in 2 files all values are null and because of that pandas changes the column type to float
