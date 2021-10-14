@@ -1,1 +1,2 @@
+release: python TrainingScript.py
 web: gunicorn FlaskApp:app
