@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from GraphQLRetriever import GraphQLRetriever
 import glob
 import os
 
@@ -11,6 +10,7 @@ def calculate_union(df_list):
     return union
    
 def read_remote_data():
+    from GraphQLRetriever import GraphQLRetriever
     get_names_query = '''
     repository(name: \\\"covidclinicaldata\\\", owner: \\\"mdcollab\\\"){
         object(oid: \\\"984490766e9d6c56832c1577575d9a3b1039ab7c\\\"){
